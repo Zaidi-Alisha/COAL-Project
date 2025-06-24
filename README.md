@@ -6,7 +6,7 @@ This is a Library Management System implemented in Assembly Language (x86) using
 ## Features:  
 
 ### Main Menu  
-- Select user type (Librarian or Customer)  
+- Select user type (Librarian or Student)  
 - Exit the system  
 
 ### Librarian Functions  
