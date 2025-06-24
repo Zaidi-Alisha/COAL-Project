@@ -37,14 +37,6 @@ This is a Library Management System implemented in Assembly Language (x86) using
 
 ---
 
-## How to Run  
-1. Ensure you have MASM and the Irvine32 library installed  
-2. Assemble the code: `ml /c /coff code.asm`  
-3. Link with Irvine32: `link /subsystem:console code.obj irvine32.lib kernel32.lib`  
-4. Run the executable: `code.exe`  
-
----
-
 ## Limitations  
 - Maximum of 50 books and 50 students  
 - Book titles and student names limited to 50 characters  
@@ -64,5 +56,3 @@ This is a Library Management System implemented in Assembly Language (x86) using
 - The system uses color coding (green for menus, yellow for welcome screen)  
 - All input/output is console-based  
 - Error handling is included for invalid choices and edge cases  
-
-For any questions or issues, please consult the source code comments or contact the developers.  
