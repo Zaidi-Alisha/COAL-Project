@@ -1,20 +1,17 @@
 INCLUDE Irvine32.inc
 
 .data
-    ; Welcome Messages
     welcomeMsg BYTE "Welcome to Library Management System", 0
     welcomeMsg2 BYTE "Property of FAST-NUCES", 0
     welcomeMsg3 BYTE "Made by Alisha and Layyana", 0
     divider BYTE "----------------------------------------", 0
 
-    ; Main Menu Options
     mainMenu BYTE "Select User Type:", 0
     option1 BYTE "1. Librarian", 0
-    option2 BYTE "2. Customer", 0
+    option2 BYTE "2. Student", 0
     option3 BYTE "3. Exit", 0
     choicePrompt BYTE "Enter your choice: ", 0
 
-    ; Librarian Menu Options
     librarianMenuTitle BYTE "Librarian Menu:", 0
     libOption1 BYTE "1. Add Book", 0
     libOption2 BYTE "2. Update Book", 0
@@ -22,14 +19,12 @@ INCLUDE Irvine32.inc
     libOption4 BYTE "4. Register Student", 0
     libOption5 BYTE "5. Back to Main Menu", 0
 
-    ; Customer Menu Options
-    customerMenuStr BYTE "Customer Menu:", 0
-    custOption1 BYTE "1. Issue Book", 0
-    custOption2 BYTE "2. Return Book", 0
-    custOption3 BYTE "3. View Issued Books", 0
-    custOption4 BYTE "4. Back to Main Menu", 0
+    studentMenuStr BYTE "Student Menu:", 0
+    studOption1 BYTE "1. Issue Book", 0
+    studOption2 BYTE "2. Return Book", 0
+    studOption3 BYTE "3. View Issued Books", 0
+    studOption4 BYTE "4. Back to Main Menu", 0
 
-    ; Book Management
     bookTitlePrompt BYTE "Enter Book Title: ", 0
     bookAuthorPrompt BYTE "Enter Book Author: ", 0
     bookISBNPrompt BYTE "Enter Book ISBN: ", 0
@@ -41,14 +36,12 @@ INCLUDE Irvine32.inc
     bookIssuedMsg BYTE "Book issued successfully!", 0
     bookReturnedMsg BYTE "Book returned successfully!", 0
 
-    ; Student Management
     studentIDPrompt BYTE "Enter Student ID: ", 0
     studentNamePrompt BYTE "Enter Student Name: ", 0
     studentRegisteredMsg BYTE "Student registered successfully!", 0
     studentNotFoundMsg BYTE "Student not found!", 0
     studentExistsMsg BYTE "Student ID already exists!", 0
 
-    ; Error Messages
     invalidChoiceMsg BYTE "Invalid choice! Please try again.", 0
     exitMsg BYTE "Thank you for using the Library Management System!", 0
     maxBooksMsg BYTE "Maximum number of books reached!", 0
@@ -58,12 +51,10 @@ INCLUDE Irvine32.inc
     bookAlreadyIssuedMsg BYTE "Book is already issued!", 0
     bookNotIssuedMsg BYTE "Book is not issued!", 0
 
-    ; Constants
     MAX_BOOKS = 50
     MAX_STUDENTS = 50
     MAX_NAME_LENGTH = 50
 
-    ; Book Data Structure
     ALIGN 4
     BookTitles BYTE 2500 DUP(0)
     BookAuthors BYTE 2500 DUP(0)
@@ -71,17 +62,14 @@ INCLUDE Irvine32.inc
     BookQuantities DWORD 50 DUP(0)
     BookIssuedTo DWORD 50 DUP(0)
 
-    ; Student Data Structure
     ALIGN 4
     StudentIDs DWORD 50 DUP(0)
     StudentNames BYTE 2500 DUP(0)
     StudentBooksIssued DWORD 50 DUP(0)
 
-    ; Counters
     BookCount DWORD 0
     StudentCount DWORD 0
 
-    ; Temporary Variables
     tempBuffer BYTE 50 DUP(0)
     tempID DWORD ?
     tempQuantity DWORD ?
@@ -97,7 +85,7 @@ main PROC
         cmp eax, 1
         je LibrarianSection
         cmp eax, 2
-        je CustomerSection
+        je StudentSection
         cmp eax, 3
         je ExitProgram
         jmp InvalidChoice
@@ -106,8 +94,8 @@ main PROC
         call LibrarianMenuProc
         jmp MainMenuLoop
 
-    CustomerSection:
-        call CustomerMenu
+    StudentSection:
+        call StudentMenu
         jmp MainMenuLoop
 
     InvalidChoice:
@@ -124,7 +112,7 @@ main PROC
 main ENDP
 
 DisplayWelcomeScreen PROC
-    mov eax, 0Eh                ; Yellow
+    mov eax, 0Eh
     call SetTextColor
     mov edx, OFFSET welcomeMsg
     call WriteString
@@ -139,13 +127,13 @@ DisplayWelcomeScreen PROC
     call WriteString
     call Crlf
     call Crlf
-    mov eax, 07h                ; Reset to White
+    mov eax, 07h
     call SetTextColor
     ret
 DisplayWelcomeScreen ENDP
 
 DisplayMainMenu PROC
-    mov eax, 0Ah                ; Green
+    mov eax, 0Ah
     call SetTextColor
     mov edx, OFFSET mainMenu
     call WriteString
@@ -161,14 +149,14 @@ DisplayMainMenu PROC
     call Crlf
     mov edx, OFFSET choicePrompt
     call WriteString
-    mov eax, 07h                ; Reset to White
+    mov eax, 07h
     call SetTextColor
     ret
 DisplayMainMenu ENDP
 
 LibrarianMenuProc PROC
     LibrarianMenuLoop:
-        mov eax, 0Ah            ; Green
+        mov eax, 0Ah
         call SetTextColor
         mov edx, OFFSET librarianMenuTitle
         call WriteString
@@ -190,7 +178,7 @@ LibrarianMenuProc PROC
         call Crlf
         mov edx, OFFSET choicePrompt
         call WriteString
-        mov eax, 07h            ; Reset to White
+        mov eax, 07h
         call SetTextColor
         call ReadInt
 
@@ -232,32 +220,32 @@ LibrarianMenuProc PROC
         ret
 LibrarianMenuProc ENDP
 
-CustomerMenu PROC
-    call CustomerLogin
+StudentMenu PROC
+    call StudentLogin
     cmp eax, 0
     je ReturnToMain
 
-    CustomerMenuLoop:
-        mov eax, 0Ah            ; Green
+    StudentMenuLoop:
+        mov eax, 0Ah
         call SetTextColor
-        mov edx, OFFSET customerMenuStr
+        mov edx, OFFSET studentMenuStr
         call WriteString
         call Crlf
-        mov edx, OFFSET custOption1
+        mov edx, OFFSET studOption1
         call WriteString
         call Crlf
-        mov edx, OFFSET custOption2
+        mov edx, OFFSET studOption2
         call WriteString
         call Crlf
-        mov edx, OFFSET custOption3
+        mov edx, OFFSET studOption3
         call WriteString
         call Crlf
-        mov edx, OFFSET custOption4
+        mov edx, OFFSET studOption4
         call WriteString
         call Crlf
         mov edx, OFFSET choicePrompt
         call WriteString
-        mov eax, 07h            ; Reset to White
+        mov eax, 07h
         call SetTextColor
         call ReadInt
 
@@ -269,44 +257,41 @@ CustomerMenu PROC
         je ViewIssuedBooks
         cmp eax, 4
         je ReturnToMain
-        jmp InvalidCustomerChoice
+        jmp InvalidStudentChoice
 
     IssueBook:
         call IssueNewBook
-        jmp CustomerMenuLoop
+        jmp StudentMenuLoop
 
     ReturnBook:
         call ReturnIssuedBook
-        jmp CustomerMenuLoop
+        jmp StudentMenuLoop
 
     ViewIssuedBooks:
         call DisplayIssuedBooks
-        jmp CustomerMenuLoop
+        jmp StudentMenuLoop
 
-    InvalidCustomerChoice:
+    InvalidStudentChoice:
         mov edx, OFFSET invalidChoiceMsg
         call WriteString
         call Crlf
-        jmp CustomerMenuLoop
+        jmp StudentMenuLoop
 
     ReturnToMain:
         ret
-CustomerMenu ENDP
+StudentMenu ENDP
 
 AddNewBook PROC
-    ; Check if we have space for new book
     mov eax, BookCount
     cmp eax, MAX_BOOKS
     jge NoSpaceForBook
 
-    ; Get book title
     mov edx, OFFSET bookTitlePrompt
     call WriteString
     mov edx, OFFSET tempBuffer
     mov ecx, MAX_NAME_LENGTH
     call ReadString
 
-    ; Store book title
     mov esi, BookCount
     mov eax, esi
     imul eax, MAX_NAME_LENGTH
@@ -317,14 +302,12 @@ AddNewBook PROC
     cld
     rep movsb
 
-    ; Get book author
     mov edx, OFFSET bookAuthorPrompt
     call WriteString
     mov edx, OFFSET tempBuffer
     mov ecx, MAX_NAME_LENGTH
     call ReadString
 
-    ; Store book author
     mov esi, BookCount
     mov eax, esi
     imul eax, MAX_NAME_LENGTH
@@ -335,28 +318,23 @@ AddNewBook PROC
     cld
     rep movsb
 
-    ; Get book ISBN
     mov edx, OFFSET bookISBNPrompt
     call WriteString
     call ReadInt
     mov esi, BookCount
     mov [BookISBNs + esi * 4], eax
 
-    ; Get book quantity
     mov edx, OFFSET bookQuantityPrompt
     call WriteString
     call ReadInt
     mov esi, BookCount
     mov [BookQuantities + esi * 4], eax
 
-    ; Initialize issued status
     mov esi, BookCount
     mov [BookIssuedTo + esi * 4], 0
 
-    ; Increment book count
     inc BookCount
 
-    ; Display success message
     mov edx, OFFSET bookAddedMsg
     call WriteString
     call Crlf
@@ -370,13 +348,11 @@ AddNewBook PROC
 AddNewBook ENDP
 
 UpdateBookInfo PROC
-    ; Get ISBN of book to update
     mov edx, OFFSET bookISBNPrompt
     call WriteString
     call ReadInt
     mov tempID, eax
 
-    ; Search for book
     mov ecx, BookCount
     mov esi, 0
     SearchLoop:
@@ -386,20 +362,17 @@ UpdateBookInfo PROC
         inc esi
         loop SearchLoop
 
-    ; Book not found
     mov edx, OFFSET bookNotFoundMsg
     call WriteString
     call Crlf
     ret
 
     BookFound:
-        ; Get new quantity
         mov edx, OFFSET bookQuantityPrompt
         call WriteString
         call ReadInt
         mov [BookQuantities + esi * 4], eax
 
-        ; Display success message
         mov edx, OFFSET bookUpdatedMsg
         call WriteString
         call Crlf
@@ -413,7 +386,6 @@ ShowAllBooks PROC
     je NoBooks
 
     DisplayLoop:
-        ; Display book title
         mov eax, esi
         imul eax, MAX_NAME_LENGTH
         mov edx, OFFSET BookTitles
@@ -421,7 +393,6 @@ ShowAllBooks PROC
         call WriteString
         call Crlf
 
-        ; Display book author
         mov eax, esi
         imul eax, MAX_NAME_LENGTH
         mov edx, OFFSET BookAuthors
@@ -429,12 +400,10 @@ ShowAllBooks PROC
         call WriteString
         call Crlf
 
-        ; Display book ISBN
         mov eax, [BookISBNs + esi * 4]
         call WriteInt
         call Crlf
 
-        ; Display book quantity
         mov eax, [BookQuantities + esi * 4]
         call WriteInt
         call Crlf
@@ -452,7 +421,6 @@ ShowAllBooks PROC
 ShowAllBooks ENDP
 
 RegisterNewStudent PROC
-    ; Check if maximum students reached
     mov eax, StudentCount
     cmp eax, MAX_STUDENTS
     jl canRegister
@@ -463,13 +431,11 @@ RegisterNewStudent PROC
     ret
 
 canRegister:
-    ; Get student ID
     mov edx, OFFSET studentIDPrompt
     call WriteString
     call ReadInt
     mov tempID, eax
 
-    ; Check for duplicate ID
     mov ecx, StudentCount
     mov esi, 0
 checkDupLoop:
@@ -483,19 +449,16 @@ checkDupLoop:
     jmp checkDupLoop
 
 storeStudent:
-    ; Store student ID
     mov esi, StudentCount
     mov eax, tempID
     mov [StudentIDs + esi * 4], eax
 
-    ; Get student name
     mov edx, OFFSET studentNamePrompt
     call WriteString
     mov edx, OFFSET tempBuffer
     mov ecx, MAX_NAME_LENGTH
     call ReadString
 
-    ; Store student name
     mov esi, StudentCount
     mov eax, esi
     imul eax, MAX_NAME_LENGTH
@@ -506,14 +469,11 @@ storeStudent:
     cld
     rep movsb
 
-    ; Initialize books issued count
     mov esi, StudentCount
     mov [StudentBooksIssued + esi * 4], 0
 
-    ; Increment student count
     inc StudentCount
 
-    ; Display success message
     mov edx, OFFSET studentRegisteredMsg
     call WriteString
     call Crlf
@@ -526,19 +486,16 @@ IDExists:
     ret
 RegisterNewStudent ENDP
 
-CustomerLogin PROC
-    ; Get student ID
+StudentLogin PROC
     mov edx, OFFSET studentIDPrompt
     call WriteString
     call ReadInt
     mov tempID, eax
 
-    ; Check if any students are registered
     mov eax, StudentCount
     cmp eax, 0
     je NoStudentsRegistered
 
-    ; Search for student
     mov ecx, StudentCount
     mov esi, 0
     SearchLoop:
@@ -548,7 +505,6 @@ CustomerLogin PROC
         inc esi
         loop SearchLoop
 
-    ; Student not found
     mov edx, OFFSET studentNotFoundMsg
     call WriteString
     call Crlf
@@ -565,16 +521,14 @@ CustomerLogin PROC
     StudentFound:
         mov eax, 1
         ret
-CustomerLogin ENDP
+StudentLogin ENDP
 
 IssueNewBook PROC
-    ; Get book ISBN
     mov edx, OFFSET bookISBNPrompt
     call WriteString
     call ReadInt
     mov tempID, eax
 
-    ; Search for book
     mov ecx, BookCount
     mov esi, 0
     SearchLoop:
@@ -584,29 +538,24 @@ IssueNewBook PROC
         inc esi
         loop SearchLoop
 
-    ; Book not found
     mov edx, OFFSET bookNotFoundMsg
     call WriteString
     call Crlf
     ret
 
     BookFound:
-        ; Check if book is available
         mov eax, [BookQuantities + esi * 4]
         cmp eax, 0
         jle NoCopiesAvailable
 
-        ; Check if book is already issued
         mov eax, [BookIssuedTo + esi * 4]
         cmp eax, 0
         jne BookAlreadyIssued
 
-        ; Issue the book
         mov eax, tempID
         mov [BookIssuedTo + esi * 4], eax
         dec [BookQuantities + esi * 4]
 
-        ; Display success message
         mov edx, OFFSET bookIssuedMsg
         call WriteString
         call Crlf
@@ -626,13 +575,11 @@ IssueNewBook PROC
 IssueNewBook ENDP
 
 ReturnIssuedBook PROC
-    ; Get book ISBN
     mov edx, OFFSET bookISBNPrompt
     call WriteString
     call ReadInt
     mov tempID, eax
 
-    ; Search for book
     mov ecx, BookCount
     mov esi, 0
     SearchLoop:
@@ -642,23 +589,19 @@ ReturnIssuedBook PROC
         inc esi
         loop SearchLoop
 
-    ; Book not found
     mov edx, OFFSET bookNotFoundMsg
     call WriteString
     call Crlf
     ret
 
     BookFound:
-        ; Check if book is issued
         mov eax, [BookIssuedTo + esi * 4]
         cmp eax, 0
         je BookNotIssued
 
-        ; Return the book
         mov [BookIssuedTo + esi * 4], 0
         inc [BookQuantities + esi * 4]
 
-        ; Display success message
         mov edx, OFFSET bookReturnedMsg
         call WriteString
         call Crlf
@@ -682,7 +625,6 @@ DisplayIssuedBooks PROC
         cmp eax, 0
         je NextBook
 
-        ; Display book title
         mov eax, esi
         imul eax, MAX_NAME_LENGTH
         mov edx, OFFSET BookTitles
@@ -690,7 +632,6 @@ DisplayIssuedBooks PROC
         call WriteString
         call Crlf
 
-        ;disp book author
         mov eax, esi
         imul eax, MAX_NAME_LENGTH
         mov edx, OFFSET BookAuthors
@@ -698,7 +639,6 @@ DisplayIssuedBooks PROC
         call WriteString
         call Crlf
 
-        ; Display book ISBN
         mov eax, [BookISBNs + esi * 4]
         call WriteInt
         call Crlf
